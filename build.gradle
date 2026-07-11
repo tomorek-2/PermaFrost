@@ -1,0 +1,124 @@
+apply plugin: "java"
+
+version = '1.0'
+
+sourceSets.main.java.srcDirs = ["JavaCode"]
+
+repositories{
+    mavenCentral()
+
+
+    ivy{
+        url 'https://github.com/'
+        patternLayout{artifact '/[organisation]/[module]/releases/download/[revision]/dependencies.jar'}
+        metadataSources{ artifact() }
+    }
+
+    ivy{
+        url 'https://github.com/'
+        patternLayout{artifact '/[organisation]/[module]/releases/download/master/[revision].jar'}
+        metadataSources{ artifact() }
+    }
+
+    ivy{
+        url 'https://github.com/'
+        patternLayout{artifact '/[organisation]/[module]/releases/download/[revision]/jabel.jar'}
+        metadataSources{ artifact() }
+    }
+}
+
+java{
+    targetCompatibility = 8
+    sourceCompatibility = JavaVersion.VERSION_17
+}
+ext {
+    mindustryVersion = 'v158'
+    sdkRoot = "/home/tomorek/AndroidSDK"
+    isWindows = System.getProperty("os.name").toLowerCase().contains("windows")
+    sdkRoot = System.getenv("ANDROID_HOME") ?: System.getenv("ANDROID_SDK_ROOT")
+    androidJar = "${sdkRoot}/platforms/android-26/android.jar"
+}
+
+
+allprojects{
+    tasks.withType(JavaCompile).tap{
+        configureEach{
+            options.compilerArgs.addAll(['--release', '8'])
+        }
+    }
+}
+dependencies {
+
+    // compileOnly "Anuken:Mindustry:$mindustryVersion"
+    compileOnly "Anuken:Mindustry:v159"
+    annotationProcessor "Anuken:jabel:v1.0.0"
+
+    if(System.getenv("USER").equals("tomorek")) {
+        compileOnly files(androidJar)
+        compileOnly files("/home/tomorek/AndroidSDK/sources/android-26")
+    }
+}
+configurations.all {
+    resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
+}
+
+tasks.register('jarAndroid'){
+    dependsOn "jar"
+    doLast{
+        if(!sdkRoot || !new File(sdkRoot).exists()) throw new GradleException("No valid Android SDK found. Ensure that ANDROID_HOME is set.")
+        def platformRoot = new File("$sdkRoot/platforms/").listFiles().sort().reverse().find{ f -> new File(f, "android.jar").exists() }
+        if(!platformRoot) throw new GradleException("No android.jar found.")
+        def dependencies = (configurations.compileClasspath.asList() + configurations.runtimeClasspath.asList() + [new File(platformRoot, "android.jar")]).collect{ "--classpath $it.path" }.join(" ")
+        def d8 = isWindows ? "d8.bat" : "d8"
+        "$d8 $dependencies --min-api 14 --output ${project.name}Android.jar ${project.name}Desktop.jar"
+                .execute(null, new File("build/libs")).waitForProcessOutput(System.out, System.err)
+    }
+}
+
+task pluginJar(type: Jar) {
+    archiveFileName = "${project.name}-plugin.jar"   // tomodrek-plugin.jar
+    from{
+        configurations.runtimeClasspath.collect{ it.isDirectory() ? it : zipTree(it) }
+    }
+
+    // Добавляем только plugin.json
+    from(projectDir) {
+        include "mod.json"
+
+    }
+
+    // Добавляем ресурсы (опционально)
+    from("assets/") {
+        include "**"
+    }
+
+
+
+}
+jar{
+    archiveFileName = "${project.name}Desktop.jar"
+    from{
+        configurations.runtimeClasspath.collect{ it.isDirectory() ? it : zipTree(it) }
+    }
+    from(projectDir){
+        include "mod.json" // или mod.hjson
+
+    }
+    from("assets/"){
+        include "**"
+    }
+}
+
+tasks.register('deploy', Jar){
+    dependsOn jarAndroid
+    dependsOn jar
+    archiveFileName = "${project.name}.jar"
+    from{ [zipTree("build/libs/${project.name}Desktop.jar"), zipTree("build/libs/${project.name}Android.jar")] }
+    doLast{
+        delete{
+            delete "build/libs/${project.name}Android.jar"
+        }
+    }
+}
+
+
