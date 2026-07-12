@@ -48,11 +48,12 @@ public class BlockHeat extends Block {
 
 
 
-                    int power = 10 - x;
-                    ModomodrekMain.HeatMap.put(new Point2(xdint, ydint), power);
+                    int Heat = 10 - x;
+                    ModomodrekMain.HeatMap.put(new Point2(xdint, ydint), Heat);
 
                 }
             }
+       int   heat =  ModomodrekMain.HeatMap.get(new Point2(xblock, yblock), 0);
         }
 
 

@@ -1,0 +1,8 @@
+name: "PermaFrost"
+minGameVersion: 159
+Java: true
+main: "JavaCode.ModomodrekMain"
+repo: "tomorek-2/PermaFrost"
+description: "The mod is just for me and for those people who want to learn java through mindustry and Java mods"
+hidden: false
+author: "Coder: Tomorek"
