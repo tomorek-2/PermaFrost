@@ -45,17 +45,43 @@ public class BlockHeat extends Block {
                     int ydint = (int) yd;
 
 
-
-
-
                     int Heat = 10 - x;
-                    ModomodrekMain.HeatMap.put(new Point2(xdint, ydint), Heat);
+                  //  ModomodrekMain.HeatMap.put(new Point2(xdint, ydint), Heat);
+                    if(xdint > -1 && ydint > -1) {
 
+if(Heat >= ModomodrekMain.HeatXYInt[xdint][ydint]) {
+
+
+    ModomodrekMain.HeatXYInt[xdint][ydint] = Heat;
+}
+                    }
                 }
             }
-       int   heat =  ModomodrekMain.HeatMap.get(new Point2(xblock, yblock), 0);
-        }
 
+        }
+public void onRemoved(){
+    for(int i = 0; i < 700; i += 3) {
+        for(int x = 0; x < 10; x++) {
+            float xd = Mathf.cosDeg(i) * x + tile.x;
+            float yd = Mathf.sinDeg(i) * x + tile.y;
+
+            int xdint = (int) xd;
+            int ydint = (int) yd;
+
+
+
+            //  ModomodrekMain.HeatMap.put(new Point2(xdint, ydint), Heat);
+            if(xdint > -1 && ydint > -1) {
+
+
+
+
+                    ModomodrekMain.HeatXYInt[xdint][ydint] = 0;
+
+            }
+        }
+    }
+}
 
     }
 }

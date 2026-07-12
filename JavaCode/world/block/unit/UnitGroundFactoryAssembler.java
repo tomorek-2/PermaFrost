@@ -25,7 +25,7 @@ public class UnitGroundFactoryAssemblerBuild extends UnitAssemblerBuild {
 @Override
     public void updateTile() {
     super.updateTile();
-    if(ModomodrekMain.HeatMap.get(new Point2(tile.x, tile.y), 0) <= 1f) {
+    if(ModomodrekMain.HeatXYInt[tile.x][tile.y] <= 7f) {
 return;
     }
     if(!readUnits.isEmpty()){
