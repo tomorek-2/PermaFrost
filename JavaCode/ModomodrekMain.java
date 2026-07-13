@@ -13,7 +13,7 @@ import mindustry.mod.Mod;
 
 public class ModomodrekMain extends Mod {
 int sizeXHeat = 2000;
-    int sizeYHeat = 2000;
+    int sizeYHeat = 1750;
     public static int[][] HeatXYInt = new int[2000][2000];
     @Override
     public void init() {
