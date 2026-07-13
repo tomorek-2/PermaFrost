@@ -12,17 +12,21 @@ import mindustry.game.EventType;
 import mindustry.mod.Mod;
 
 public class ModomodrekMain extends Mod {
-
-    public static int[][] HeatXYInt = new int[750][750];
+int sizeXHeat = 2000;
+    int sizeYHeat = 2000;
+    public static int[][] HeatXYInt = new int[2000][2000];
     @Override
     public void init() {
-        Vars.mods.getMod("tomodrek").meta.hidden = true;
-        Events.run(EventType.Trigger.update, () -> {
-           if(arc.Core.input.keyDown(KeyCode.f2))  Vars.mods.getMod("permafrost").meta.hidden = true;
-        });
+if(!Vars.headless) {
+    Events.run(EventType.Trigger.update, () -> {
+        if (arc.Core.input.keyDown(KeyCode.f2)) Vars.mods.getMod("permafrost").meta.hidden = true;
+    });
+}
         Events.on(EventType.WorldLoadEvent.class, event -> {
-          //  HeatXYInt = new int[Vars.world.width()][Vars.world.height()];
+         //  HeatXYInt = new int[Vars.world.width()][Vars.world.height()];
+            HeatXYInt = new int[sizeXHeat++][sizeYHeat++];
         });
+
     }
     @Override
     public void loadContent() {
