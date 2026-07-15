@@ -8,6 +8,7 @@ import mindustry.world.Block;
 import mindustry.world.blocks.environment.OreBlock;
 import mindustry.world.meta.BuildVisibility;
 import world.block.anything.HeatConveyor;
+import world.block.anything.HeatDrill;
 import world.block.realHeat.BlockHeat;
 
 
@@ -16,13 +17,16 @@ public class PermaFrostContent extends Mod {
    public static OreBlock nickelOre, chromiumOre;
    public  static Item chromium, nickel;
    public static  BlockHeat blockHeat;
-   public static HeatConveyor HeatConveyor;
+   public static HeatConveyor heatConveyor;
+   public static HeatDrill heatDrill;
     public static void load() {
 chromium = new Item("chromium") {{
     cost = 2f;
+    hardness = 2;
 }};
 nickel = new Item("nickel") {{
 cost = 3f;
+hardness = 2;
 }};
 nickelOre = new OreBlock("nickel-ore") {{
    variants = 3;
@@ -31,20 +35,26 @@ nickelOre = new OreBlock("nickel-ore") {{
 chromiumOre = new OreBlock("chromium-ore") {{
 variants = 3;
 itemDrop = chromium;
+
 }};
 blockHeat = new BlockHeat("BlockHeat") {{
     health = 10;
     category = Category.crafting;
     buildVisibility = BuildVisibility.shown;
 }};
-HeatConveyor = new HeatConveyor("HeatConveyor") {{
+heatConveyor = new HeatConveyor("HeatConveyor") {{
    health = 20;
    category = Category.crafting;
    buildVisibility = BuildVisibility.shown;
     speed = 0.08f;
     displayedSpeed = 11f;
 }};
-
+heatDrill = new HeatDrill("HeatDrill") {{
+    size = 3;
+    consumePower(3f);
+    health = 600;
+    tier = 2;
+}};
     }
 
 

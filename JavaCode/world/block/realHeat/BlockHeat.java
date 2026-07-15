@@ -41,7 +41,7 @@ public class BlockHeat extends Block {
                 addBar("LevelHeat", (BlockHeatBuildIng entity) -> new Bar(
                         () -> "Heat: " + ModomodrekMain.HeatXYInt[entity.tile.x][entity.tile.y],
                         () -> Pal.ammo,
-                        () -> ModomodrekMain.HeatXYInt[entity.tile.x][entity.tile.y] / 10f
+                        () -> ModomodrekMain.HeatXYInt[entity.tile.x][entity.tile.y] / 100f
 
                 ));
 
