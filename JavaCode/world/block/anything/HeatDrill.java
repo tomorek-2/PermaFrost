@@ -7,7 +7,7 @@ import mindustry.world.blocks.production.Drill;
 public class HeatDrill extends Drill {
     public HeatDrill(String name) {
         super(name);
-
+update = true;
 
     }
     public void setBars() {
