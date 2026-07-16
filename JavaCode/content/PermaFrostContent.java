@@ -9,6 +9,7 @@ import mindustry.world.blocks.environment.OreBlock;
 import mindustry.world.meta.BuildVisibility;
 import world.block.anything.HeatConveyor;
 import world.block.anything.HeatDrill;
+import world.block.anything.HeatWall;
 import world.block.realHeat.BlockHeat;
 
 
@@ -19,6 +20,7 @@ public class PermaFrostContent extends Mod {
    public static  BlockHeat blockHeat;
    public static HeatConveyor heatConveyor;
    public static HeatDrill heatDrill;
+   public static HeatWall heatWall;
     public static void load() {
 chromium = new Item("chromium") {{
     cost = 2f;
@@ -54,6 +56,13 @@ heatDrill = new HeatDrill("HeatDrill") {{
     consumePower(3f);
     health = 600;
     tier = 2;
+    buildVisibility = BuildVisibility.shown;
+    category = Category.production;
+}};
+heatWall = new HeatWall("HeatWall") {{
+   health = 300;
+   category = Category.defense;
+   buildVisibility = BuildVisibility.shown;
 }};
     }
 

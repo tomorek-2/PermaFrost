@@ -25,12 +25,14 @@ public class HeatConveyor extends Conveyor {
     }
     public class HeatConveyorBuild extends ConveyorBuild {
 public void updateTile() {
-    //super.updateTile();
-    if(ModomodrekMain.HeatXYInt[tile.x][tile.y] <= 3f) {
-        return;
+if(timer(0, 15))
+        if (JavaCode.ModomodrekMain.HeatXYInt[tile.x][tile.y] > 0)
+            JavaCode.ModomodrekMain.HeatXYInt[tile.x][tile.y] -= 1f;
+        if (ModomodrekMain.HeatXYInt[tile.x][tile.y] <= 3f) {
+            return;
+        }
+        super.updateTile();
     }
-    super.updateTile();
-}
 
     }
     }
