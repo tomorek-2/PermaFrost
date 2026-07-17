@@ -9,6 +9,7 @@ import arc.struct.ObjectIntMap;
 import arc.struct.Seq;
 import mindustry.Vars;
 import mindustry.game.EventType;
+import mindustry.gen.Icon;
 import mindustry.mod.Mod;
 
 public class ModomodrekMain extends Mod {
@@ -36,6 +37,11 @@ if(!Vars.headless) {
           HeatXYInt = new int[Vars.world.width()][Vars.world.height()];
           //  HeatXYInt = new int[sizeXHeat++][sizeYHeat++];
         });
+Events.on(EventType.ClientLoadEvent.class, event -> {
+    Vars.ui.settings.addCategory("КалькуляторUI", Icon.powerOld, table -> {
+        JavaCode.ModomodrekUI.showCalculate(table);
+    });
+    });
 
 
     }

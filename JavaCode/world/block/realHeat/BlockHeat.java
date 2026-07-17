@@ -51,12 +51,12 @@ public class BlockHeat extends Block {
 
         @Override
         public void updateTile() {
-            if (timer(0, 20)) {
+            if (timer(0, 10)) {
                 int xblock = tile.x;
                 int yblock = tile.y;
 int xx;
 int xy;
-                for (int i = 0; i < 700; i += 3) {
+                for (int i = 0; i < 500; i += 8) {
                     for (int x = 0; x < 10; x++) {
                         float xd = Mathf.cosDeg(i) * x + xblock;
                         float yd = Mathf.sinDeg(i) * x + yblock;
@@ -99,7 +99,7 @@ int xy;
 
 public void onRemoved(){
 
-    for(int i = 0; i < 700; i += 3) {
+    for(int i = 0; i < 500; i += 8) {
         for(int x = 0; x < 10; x++) {
             float xd = Mathf.cosDeg(i) * x + tile.x;
             float yd = Mathf.sinDeg(i) * x + tile.y;
