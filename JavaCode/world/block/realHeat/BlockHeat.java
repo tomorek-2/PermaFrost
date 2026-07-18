@@ -6,6 +6,8 @@ import arc.math.Mathf;
 import arc.math.geom.Point2;
 import arc.struct.EnumSet;
 import arc.util.Strings;
+import arc.util.io.Reads;
+import arc.util.io.Writes;
 import mindustry.Vars;
 import mindustry.gen.Building;
 import mindustry.graphics.Pal;
@@ -48,14 +50,16 @@ public class BlockHeat extends Block {
 
     }
     public class BlockHeatBuildIng extends Building {
-
+        public int currentHeat = 0;
         @Override
         public void updateTile() {
+            if (Vars.net.server() || !Vars.net.active()) {
             if (timer(0, 10)) {
+
                 int xblock = tile.x;
                 int yblock = tile.y;
-int xx;
-int xy;
+                int xx;
+                int xy;
                 for (int i = 0; i < 500; i += 8) {
                     for (int x = 0; x < 10; x++) {
                         float xd = Mathf.cosDeg(i) * x + xblock;
@@ -68,31 +72,34 @@ int xy;
                         int Heat = 10 - x;
 
                         if (xdint > -1 && ydint > -1) {
-                            if(xdint < Vars.world.width() && ydint < Vars.world.height()) {
+                            if (xdint < Vars.world.width() && ydint < Vars.world.height()) {
                                 if (Heat >= ModomodrekMain.HeatXYInt[xdint][ydint]) {
                                     Building build = Vars.world.build(xdint, ydint);
 
                                     if (build != null && build instanceof HeatWall.HeatWallBuilding) {
-                                        float xd001 = Mathf.cosDeg(i) * (xx=x-1) + xblock;
-                                        float yd001 = Mathf.sinDeg(i) * (xy=x-1) + yblock;
+                                        float xd001 = Mathf.cosDeg(i) * (xx = x - 1) + xblock;
+                                        float yd001 = Mathf.sinDeg(i) * (xy = x - 1) + yblock;
 
                                         int xdint001 = (int) xd001;
                                         int ydint001 = (int) yd001;
-                                        if(xdint001 < Vars.world.width() && ydint001 < Vars.world.height() && xdint001 > -1 && ydint001 > -1) {
-                                          int
-                                            heat001 = Heat + 1;
+                                        if (xdint001 < Vars.world.width() && ydint001 < Vars.world.height() && xdint001 > -1 && ydint001 > -1) {
+                                            int
+                                                    heat001 = Heat + 1;
                                             ModomodrekMain.HeatXYInt[xdint001][ydint001] = heat001;
                                         }
-                                            break;
+                                        break;
 
                                     }
 
                                     ModomodrekMain.HeatXYInt[xdint][ydint] = Heat;
+
                                 }
                             }
                         }
                     }
                 }
+            }
+            } else {
 
             }
         }
@@ -122,5 +129,16 @@ if(xdint < Vars.world.width() && ydint < Vars.world.height()) {
     super.onRemoved();
 }
 
+        @Override
+        public void write(Writes write) {
+            super.write(write);
+            write.i(JavaCode.ModomodrekMain.HeatXYInt[tile.x][tile.y]);
+        }
+
+        @Override
+        public void read(Reads read, byte revision) {
+            super.read(read, revision);
+            currentHeat = read.i();
+        }
     }
 }
