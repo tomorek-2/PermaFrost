@@ -15,6 +15,7 @@ public class HeatWall extends Wall {
     public HeatWall(String name) {
         super(name);
         update = true;
+        sync = true;
     }
 
     @Override
@@ -29,6 +30,7 @@ public class HeatWall extends Wall {
     }
 
     public class HeatWallBuilding extends WallBuild {
+
         public int currentHeat = 0;
         @Override
         public void updateTile() {
@@ -52,6 +54,19 @@ public class HeatWall extends Wall {
         public void read(Reads read, byte revision) {
             super.read(read, revision);
             JavaCode.ModomodrekMain.HeatXYInt[tile.x][tile.y]     = read.i();
+
+        }
+        @Override
+        public void writeSync(Writes write) {
+
+            super.writeSync(write);
+            write.i(JavaCode.ModomodrekMain.HeatXYInt[tile.x][tile.y]);
+        }
+        @Override
+        public void readSync (Reads read,byte revision)
+        {
+            super.readSync(read, revision);
+            JavaCode.ModomodrekMain.HeatXYInt[tile.x][tile.y] = read.i();
         }
     }
 }

@@ -101,11 +101,13 @@ public class BlockHeat extends Block {
             }
             } else {
 
+ModomodrekMain.HeatXYInt[tile.x][tile.y] = currentHeat;
+
             }
         }
 
 public void onRemoved(){
-
+    if (Vars.net.server() || !Vars.net.active()) {
     for(int i = 0; i < 500; i += 8) {
         for(int x = 0; x < 10; x++) {
             float xd = Mathf.cosDeg(i) * x + tile.x;
@@ -115,16 +117,18 @@ public void onRemoved(){
             int ydint = (int) yd;
 
 
-
             //  ModomodrekMain.HeatMap.put(new Point2(xdint, ydint), Heat);
-            if(xdint > -1 && ydint > -1) {
-if(xdint < Vars.world.width() && ydint < Vars.world.height()) {
+            if (xdint > -1 && ydint > -1) {
+                if (xdint < Vars.world.width() && ydint < Vars.world.height()) {
 
 
-    ModomodrekMain.HeatXYInt[xdint][ydint] = 0;
-}
+                    ModomodrekMain.HeatXYInt[xdint][ydint] = 0;
+                }
             }
         }
+        }
+    } else {
+
     }
     super.onRemoved();
 }
@@ -138,7 +142,21 @@ if(xdint < Vars.world.width() && ydint < Vars.world.height()) {
         @Override
         public void read(Reads read, byte revision) {
             super.read(read, revision);
-            currentHeat = read.i();
+            JavaCode.ModomodrekMain.HeatXYInt[tile.x][tile.y] = read.i();
+            currentHeat = JavaCode.ModomodrekMain.HeatXYInt[tile.x][tile.y];
+
+        }
+        @Override
+        public void writeSync(Writes write) {
+
+            super.writeSync(write);
+            write.i(JavaCode.ModomodrekMain.HeatXYInt[tile.x][tile.y]);
+        }
+        @Override
+        public void readSync (Reads read,byte revision)
+        {
+            super.readSync(read, revision);
+            JavaCode.ModomodrekMain.HeatXYInt[tile.x][tile.y] = read.i();
         }
     }
 }
