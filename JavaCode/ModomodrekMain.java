@@ -17,7 +17,7 @@ int sizeXHeat = 2000;
 boolean InitHiddenMod = false;
     int sizeYHeat = 1750;
     arc.util.Timer timer = new arc.util.Timer();
-    public static int[][] HeatXYInt = new int[2000][2000];
+    public static int[][] HeatXYInt = new int[50][50];
     @Override
     public void init() {
 if(!Vars.headless) {
@@ -33,10 +33,10 @@ if(!Vars.headless) {
     }
 }
 
-        Events.on(EventType.WorldLoadEndEvent.class, event -> {
+      /*  Events.on(EventType.WorldLoadEndEvent.class, event -> {
           HeatXYInt = new int[Vars.world.width()][Vars.world.height()];
           //  HeatXYInt = new int[sizeXHeat++][sizeYHeat++];
-        });
+        }); */
 Events.on(EventType.ClientLoadEvent.class, event -> {
     Vars.ui.settings.addCategory("КалькуляторUI", Icon.powerOld, table -> {
         JavaCode.ModomodrekUI.showCalculate(table);
@@ -47,7 +47,7 @@ Events.on(EventType.ClientLoadEvent.class, event -> {
     }
     @Override
     public void loadContent() {
-        JavaCode.content.PermaFrostContent.load();
+    //    JavaCode.content.PermaFrostContent.load();
     }
 
 }
